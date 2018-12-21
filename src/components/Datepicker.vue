@@ -1,5 +1,11 @@
 <template>
-  <div class="vdp-datepicker" :class="[wrapperClass, isRtl ? 'rtl' : '']">
+  <div
+    class="vdp-datepicker"
+    :class="[wrapperClass, isRtl ? 'rtl' : '']"
+    @keydown.up.prevent="keyEventUp($event)"
+    @keydown.down.prevent="keyEventDown($event)"
+    @keydown.left.prevent="keyEventLeft($event)"
+    @keydown.right.prevent="keyEventRight($event)">
     <date-input
       :selectedDate="selectedDate"
       :resetTypedDate="resetTypedDate"
@@ -450,6 +456,32 @@ export default {
       }
       if (this.isInline) {
         this.setInitialView()
+      }
+    },
+    keyEvent ($event) {
+      console.log($event)
+      if (typeof this['keyboard' + $event.key] === 'function') {
+        this['keyboard' + $event.key]()
+      }
+    },
+    keyEventUp ($event) {
+      if (this.selectedDate !== null) {
+        this.setDate(this.selectedDate.getTime() - 1000 * 60 * 60 * 24 * 7)
+      }
+    },
+    keyEventDown ($event) {
+      if (this.selectedDate !== null) {
+        this.setDate(this.selectedDate.getTime() + 1000 * 60 * 60 * 24 * 7)
+      }
+    },
+    keyEventLeft ($event) {
+      if (this.selectedDate !== null) {
+        this.setDate(this.selectedDate.getTime() - 1000 * 60 * 60 * 24)
+      }
+    },
+    keyEventRight ($event) {
+      if (this.selectedDate !== null) {
+        this.setDate(this.selectedDate.getTime() + 1000 * 60 * 60 * 24)
       }
     }
   },
