@@ -2,10 +2,7 @@
   <div
     class="vdp-datepicker"
     :class="[wrapperClass, isRtl ? 'rtl' : '']"
-    @keydown.up.prevent="keyEventUp($event)"
-    @keydown.down.prevent="keyEventDown($event)"
-    @keydown.left.prevent="keyEventLeft($event)"
-    @keydown.right.prevent="keyEventRight($event)">
+    @keydown.capture="keyEvent">
     <date-input
       :selectedDate="selectedDate"
       :resetTypedDate="resetTypedDate"
@@ -459,29 +456,93 @@ export default {
       }
     },
     keyEvent ($event) {
-      console.log($event)
-      if (typeof this['keyboard' + $event.key] === 'function') {
-        this['keyboard' + $event.key]()
+      if (typeof this['keyEvent' + $event.code] === 'function') {
+        $event.preventDefault();
+        this['keyEvent' + $event.code]($event)
       }
     },
-    keyEventUp ($event) {
-      if (this.selectedDate !== null) {
-        this.setDate(this.selectedDate.getTime() - 1000 * 60 * 60 * 24 * 7)
+    keyEventArrowUp ($event) {
+      this.moveSelectionUp()
+    },
+    keyEventArrowDown ($event) {
+      this.moveSelectionDown()
+    },
+    keyEventArrowLeft ($event) {
+      this.moveSelectionLeft()
+    },
+    keyEventArrowRight ($event) {
+      this.moveSelectionRight()
+    },
+    moveSelectionUp () {
+      let moveBy = 1000 * 60 * 60 * 24 * 7
+      if (this.selectedDate === null) {
+        this.setDate(this.pageTimestamp)
+      } else if (this.showDayView) {
+        this.setDate(this.selectedDate.getTime() - moveBy)
+      } else if (this.showMonthView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setMonth(newTime.getMonth() - 3)
+        this.setDate(newTime.getTime())
+      } else if (this.showYearView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        console.log(newTime)
+        newTime.setFullYear(newTime.getFullYear() - 3)
+        console.log(newTime)
+        this.setDate(newTime.getTime())
       }
     },
-    keyEventDown ($event) {
-      if (this.selectedDate !== null) {
-        this.setDate(this.selectedDate.getTime() + 1000 * 60 * 60 * 24 * 7)
+    moveSelectionDown () {
+      let moveBy = 1000 * 60 * 60 * 24 * 7
+      if (this.selectedDate === null) {
+        this.setDate(this.pageTimestamp)
+      } else if (this.showDayView) {
+        this.setDate(this.selectedDate.getTime() + moveBy)
+      } else if (this.showMonthView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setMonth(newTime.getMonth() + 3)
+        this.setDate(newTime.getTime())
+      } else if (this.showYearView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setFullYear(newTime.getFullYear() + 3)
+        this.setDate(newTime.getTime())
       }
     },
-    keyEventLeft ($event) {
-      if (this.selectedDate !== null) {
-        this.setDate(this.selectedDate.getTime() - 1000 * 60 * 60 * 24)
+    moveSelectionLeft () {
+      let moveBy = 1000 * 60 * 60 * 24
+      if(this.isRtl) {
+        moveBy = -moveBy
+      }
+      if (this.selectedDate === null) {
+        return
+      } else if (this.showDayView) {
+        this.setDate(this.selectedDate.getTime() - moveBy)
+      } else if (this.showMonthView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setMonth(newTime.getMonth() - 1)
+        this.setDate(newTime.getTime())
+      } else if (this.showYearView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setFullYear(newTime.getFullYear() - 1)
+        this.setDate(newTime.getTime())
       }
     },
-    keyEventRight ($event) {
-      if (this.selectedDate !== null) {
-        this.setDate(this.selectedDate.getTime() + 1000 * 60 * 60 * 24)
+    moveSelectionRight () {
+      let moveBy = 1000 * 60 * 60 * 24
+      if(this.isRtl) {
+        moveBy = -moveBy
+      }
+      if (this.selectedDate === null) {
+        return
+      } else if (this.showDayView) {
+        this.setDate(this.selectedDate.getTime() + moveBy)
+      } else if (this.showMonthView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setMonth(newTime.getMonth() + 1)
+        this.setDate(newTime.getTime())
+      } else if (this.showYearView) {
+        let newTime = new Date(this.selectedDate.getTime())
+        newTime.setFullYear(newTime.getFullYear() + 1)
+        this.setDate(newTime.getTime())
       }
     }
   },
