@@ -31,7 +31,7 @@
     "test": "jest --config test/unit/jest.conf.js --coverage",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "prepublishOnly": "yarn build",
-    "preinstall": "npm run build"
+    "postinstall": "npm run build"
   },
   "pre-commit": [
     "lint",
