@@ -13,7 +13,8 @@
   "unpkg": "dist/vuejs-datepicker.min.js",
   "files": [
     "src",
-    "dist"
+    "dist",
+    "scripts"
   ],
   "author": "Charlie Kassel <ck@charliekassel.com>",
   "repository": {
