@@ -457,7 +457,7 @@ export default {
     },
     keyEvent ($event) {
       if (typeof this['keyEvent' + $event.code] === 'function') {
-        $event.preventDefault();
+        $event.preventDefault()
         this['keyEvent' + $event.code]($event)
       }
     },
@@ -509,7 +509,7 @@ export default {
     },
     moveSelectionLeft () {
       let moveBy = 1000 * 60 * 60 * 24
-      if(this.isRtl) {
+      if (this.isRtl) {
         moveBy = -moveBy
       }
       if (this.selectedDate === null) {
@@ -528,7 +528,7 @@ export default {
     },
     moveSelectionRight () {
       let moveBy = 1000 * 60 * 60 * 24
-      if(this.isRtl) {
+      if (this.isRtl) {
         moveBy = -moveBy
       }
       if (this.selectedDate === null) {
