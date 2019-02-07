@@ -26,12 +26,12 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "build": "yarn lint && rm -rf dist/* && babel-node scripts/build.js && babel-node scripts/build-locale.js",
+    "build": "npm run lint && rm -rf dist/* && babel-node scripts/build.js && babel-node scripts/build-locale.js",
     "serve": "rollup -c scripts/serve.js --watch",
     "test": "jest --config test/unit/jest.conf.js --coverage",
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "prepublishOnly": "yarn build",
-    "preinstall": "yarn build"
+    "preinstall": "npm run build"
   },
   "pre-commit": [
     "lint",
