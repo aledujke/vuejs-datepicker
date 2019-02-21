@@ -2,7 +2,7 @@
   <div
     class="vdp-datepicker"
     :class="[wrapperClass, isRtl ? 'rtl' : '']"
-    @keyup="keyEvent">
+    @keyup.capture="keyEvent">
     <date-input
       :selectedDate="selectedDate"
       :resetTypedDate="resetTypedDate"
@@ -458,6 +458,7 @@ export default {
     keyEvent ($event) {
       if (typeof this['keyEvent' + $event.code] === 'function') {
         this['keyEvent' + $event.code]($event)
+        $event.preventDefault()
         $event.stopPropagation()
       }
     },
