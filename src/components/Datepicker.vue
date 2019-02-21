@@ -456,7 +456,6 @@ export default {
       }
     },
     keyEvent ($event) {
-      console.log('pls be first')
       if (typeof this['keyEvent' + $event.code] === 'function') {
         this['keyEvent' + $event.code]($event)
         $event.stopPropagation()
