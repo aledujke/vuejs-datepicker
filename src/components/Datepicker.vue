@@ -2,7 +2,8 @@
   <div
     class="vdp-datepicker"
     :class="[wrapperClass, isRtl ? 'rtl' : '']"
-    @keyup.capture="keyEvent">
+    @keyup.capture="keyEvent"
+    @keydown.capture="keyDownEvent">
     <date-input
       :selectedDate="selectedDate"
       :resetTypedDate="resetTypedDate"
@@ -456,8 +457,26 @@ export default {
       }
     },
     keyEvent ($event) {
+      if (this.typeable) {
+        return
+      }
+      if (!this.isOpen && $event.keyCode === 13) {
+        this.showCalendar()
+        $event.preventDefault()
+        $event.stopPropagation()
+      }
       if (typeof this['keyEvent' + $event.code] === 'function') {
-        this['keyEvent' + $event.code]($event)
+        if (!this.isOpen) {
+          this.showCalendar()
+        } else {
+          this['keyEvent' + $event.code]($event)
+          $event.preventDefault()
+          $event.stopPropagation()
+        }
+      }
+    },
+    keyDownEvent ($event) {
+      if (typeof this['keyEvent' + $event.code] === 'function') {
         $event.preventDefault()
         $event.stopPropagation()
       }
